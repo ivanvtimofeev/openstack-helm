@@ -6,7 +6,7 @@ export CONTAINER_DISTRO_VERSION=bionic
 
 sudo apt update -y
 sudo apt install -y python3-pip resolvconf
-sudo dpkg-reconfigure --force-all resolvconf
+sudo dpkg-reconfigure --force resolvconf
 
 cd ~/openstack-helm
 
