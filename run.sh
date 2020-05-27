@@ -16,3 +16,4 @@ dns_cluster_ip=`kubectl get svc kube-dns -n kube-system --no-headers -o custom-c
 
 echo "nameserver ${dns_cluster_ip}" | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
 sudo dpkg-reconfigure --force resolvconf
+sudo systemctl restart resolvconf
