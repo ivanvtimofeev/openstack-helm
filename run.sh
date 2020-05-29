@@ -28,5 +28,10 @@ sudo systemctl restart resolvconf
 ./tools/deployment/component/heat/heat.sh
 ./tools/deployment/component/glance/glance.sh
 ./tools/deployment/component/compute-kit/libvirt.sh
-sed -i 's/^openstack network agent list/#openstack network agent list/' ./tools/deployment/component/compute-kit/compute-kit.sh
+sed -i 's/^\.\/tools\/deployment\/common\/wait-for-pods.sh openstack/#\.\/tools\/deployment\/common\/wait-for-pods.sh openstack/' ./tools/deployment/component/compute-kit/compute-kit.sh
+sed -i 's/^openstack compute service list/#openstack compute service list/' ./tools/deployment/component/compute-kit/compute-kit.sh
+sed -i 's/^openstack hypervisor list/#openstack hypervisor list/' ./tools/deployment/component/compute-kit/compute-kit.sh
+sed -i 's/^openstack network agent list/#openstack network_agent list/' ./tools/deployment/component/compute-kit/compute-kit.sh
+sed -i 's/^helm test nova --timeout $timeout/#helm test nova --timeout $timeout/' ./tools/deployment/component/compute-kit/compute-kit.sh
+sed -i 's/^helm test neutron --timeout $timeout/#helm test neutron --timeout $timeout/' ./tools/deployment/component/compute-kit/compute-kit.sh
 ./tools/deployment/component/compute-kit/compute-kit.sh
