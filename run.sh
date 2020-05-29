@@ -28,3 +28,5 @@ sudo systemctl restart resolvconf
 ./tools/deployment/component/heat/heat.sh
 ./tools/deployment/component/glance/glance.sh
 ./tools/deployment/component/compute-kit/libvirt.sh
+sed -i 's/^openstack network agent list/#openstack network agent list/' ./tools/deployment/component/compute-kit/compute-kit.sh
+./tools/deployment/component/compute-kit/compute-kit.sh

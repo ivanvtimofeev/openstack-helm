@@ -136,7 +136,7 @@ export OS_CLOUD=openstack_helm
 openstack service list
 sleep 30 #NOTE(portdirect): Wait for ingress controller to update rules and restart Nginx
 openstack compute service list
-openstack network agent list
+#openstack network agent list
 openstack hypervisor list
 
 if [ "x${RUN_HELM_TESTS}" == "xno" ]; then
