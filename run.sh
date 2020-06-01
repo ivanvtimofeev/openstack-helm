@@ -41,9 +41,8 @@ sudo docker create --name tf-helm-deployer-src --entrypoint /bin/true tungstenfa
 sudo docker cp tf-helm-deployer-src:/src ~/tf-helm-deployer
 sudo docker rm -fv tf-helm-deployer-src
 
-cd /home/centos/tf-helm-deployer
+cd ~/tf-helm-deployer
 helm repo add local http://localhost:8879/charts
-cd tf-helm-deployer
 sudo make all
 
 
