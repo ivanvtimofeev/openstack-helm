@@ -71,3 +71,6 @@ global:
     host_os: ubuntu
 EOF
 
+sudo mkdir -p /var/log/contrail
+kubectl create ns tungsten-fabric
+helm upgrade --install --namespace tungsten-fabric tungsten-fabric ~/tf-helm-deployer/contrail -f ~/tf-devstack-values.yaml
