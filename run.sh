@@ -74,3 +74,6 @@ EOF
 sudo mkdir -p /var/log/contrail
 kubectl create ns tungsten-fabric
 helm upgrade --install --namespace tungsten-fabric tungsten-fabric ~/tf-helm-deployer/contrail -f ~/tf-devstack-values.yaml
+kubectl label nodes --all opencontrail.org/vrouter-kernel=enabled
+sleep 30
+kubectl label nodes --all openstack-control-plane=enabled
