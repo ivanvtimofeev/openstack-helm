@@ -35,3 +35,16 @@ sed -i 's/^openstack network agent list/#openstack network_agent list/' ./tools/
 sed -i 's/^helm test nova --timeout $timeout/#helm test nova --timeout $timeout/' ./tools/deployment/component/compute-kit/compute-kit.sh
 sed -i 's/^helm test neutron --timeout $timeout/#helm test neutron --timeout $timeout/' ./tools/deployment/component/compute-kit/compute-kit.sh
 ./tools/deployment/component/compute-kit/compute-kit.sh
+
+cd
+sudo docker create --name tf-helm-deployer-src --entrypoint /bin/true tungstenfabric/tf-helm-deployer-src:latest
+sudo docker cp tf-helm-deployer-src:/src ~/tf-helm-deployer
+sudo docker rm -fv tf-helm-deployer-src
+
+cd /home/centos/tf-helm-deployer
+helm repo add local http://localhost:8879/charts
+cd tf-helm-deployer
+sudo make all
+
+
+
