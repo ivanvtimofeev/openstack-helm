@@ -4,6 +4,50 @@ export OPENSTACK_RELEASE=train
 export CONTAINER_DISTRO_NAME=ubuntu
 export CONTAINER_DISTRO_VERSION=bionic
 
+function wait_cmd_success() {
+  # silent mode = don't print output of input cmd for each attempt.
+  local cmd=$1
+  local interval=${2:-3}
+  local max=${3:-300}
+  local silent_cmd=${4:-1}
+
+  local state_save=$(set +o)
+  set +o xtrace
+  set -o pipefail
+  local i=0
+  if [[ "$silent_cmd" != "0" ]]; then
+    local to_dev_null="&>/dev/null"
+  else
+    local to_dev_null=""
+  fi
+  while ! eval "$cmd" "$to_dev_null"; do
+    printf "."
+    i=$((i + 1))
+    if (( i > max )) ; then
+      echo ""
+      echo "ERROR: wait failed in $((i*10))s"
+      eval "$cmd"
+      eval "$state_save"
+      return 1
+    fi
+    sleep $interval
+  done
+  echo ""
+  echo "INFO: done in $((i*10))s"
+  eval "$state_save"
+}
+
+
+function wait_nic_up() {
+  local nic=$1
+  printf "INFO: wait for $nic is up"
+  if ! wait_cmd_success "nic_has_ip $nic" 10 60; then
+    echo "ERROR: $nic is not up"
+    return 1
+  fi
+  echo "INFO: $nic is up"
+}
+
 sudo apt update -y
 sudo apt install -y python3-pip resolvconf
 
@@ -75,5 +119,6 @@ sudo mkdir -p /var/log/contrail
 kubectl create ns tungsten-fabric
 helm upgrade --install --namespace tungsten-fabric tungsten-fabric ~/tf-helm-deployer/contrail -f ~/tf-devstack-values.yaml
 kubectl label nodes --all opencontrail.org/vrouter-kernel=enabled
-sleep 30
-kubectl label nodes --all openstack-control-plane=enabled
+
+wait_nic_up vhost0
+kubectl label nodes --all opencontrail.org/controller=enabled
