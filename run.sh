@@ -36,6 +36,12 @@ sed -i 's/^helm test nova --timeout $timeout/#helm test nova --timeout $timeout/
 sed -i 's/^helm test neutron --timeout $timeout/#helm test neutron --timeout $timeout/' ./tools/deployment/component/compute-kit/compute-kit.sh
 ./tools/deployment/component/compute-kit/compute-kit.sh
 
+
+PHYS_INT=`ip route get 1 | grep -o 'dev.*' | awk '{print($2)}'`
+NODE_IP=`ip addr show dev $PHYS_INT | grep 'inet ' | awk '{print $2}' | head -n 1 | cut -d '/' -f 1`
+export CONTROLLER_NODES="${CONTROLLER_NODES:-$NODE_IP}"
+export AGENT_NODE="${AGENT_NODES:-$NODE_IP}"
+
 cd
 sudo docker create --name tf-helm-deployer-src --entrypoint /bin/true tungstenfabric/tf-helm-deployer-src:latest
 sudo docker cp tf-helm-deployer-src:/src ~/tf-helm-deployer
@@ -44,6 +50,7 @@ sudo docker rm -fv tf-helm-deployer-src
 cd ~/tf-helm-deployer
 helm repo add local http://localhost:8879/charts
 sudo make all
+
 
 
 
