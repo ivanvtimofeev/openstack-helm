@@ -51,6 +51,23 @@ cd ~/tf-helm-deployer
 helm repo add local http://localhost:8879/charts
 sudo make all
 
-
-
+cat <<EOF > ~/tf-devstack-values.yaml 
+global:
+  contrail_env:
+    CONTAINER_REGISTRY: tungstenfabric
+    CONTRAIL_CONTAINER_TAG: latest
+    CONTROLLER_NODES: ${CONTROLLER_NODES}
+    JVM_EXTRA_OPTS: "-Xms1g -Xmx2g"
+    BGP_PORT: "1179"
+    CONFIG_DATABASE_NODEMGR__DEFAULTS__minimum_diskGB: "2"
+    DATABASE_NODEMGR__DEFAULTS__minimum_diskGB: "2"
+    LOG_LEVEL: SYS_DEBUG
+    VROUTER_ENCRYPTION: FALSE
+    ANALYTICS_ALARM_ENABLE: TRUE
+    ANALYTICS_SNMP_ENABLE: TRUE
+    ANALYTICSDB_ENABLE: TRUE
+    CLOUD_ORCHESTRATOR: openstack
+  node:
+    host_os: ubuntu
+EOF
 
