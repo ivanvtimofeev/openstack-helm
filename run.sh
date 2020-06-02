@@ -86,6 +86,13 @@ NODE_IP=`ip addr show dev $PHYS_INT | grep 'inet ' | awk '{print $2}' | head -n 
 export CONTROLLER_NODES="${CONTROLLER_NODES:-$NODE_IP}"
 export AGENT_NODE="${AGENT_NODES:-$NODE_IP}"
 
+cat <<EOF | sudo tee -a /etc/hosts
+${NODE_IP} node1.cluster.local node1
+EOF
+cat <<EOF | sudo tee /etc/hostname
+node1
+EOF
+
 cd
 sudo docker create --name tf-helm-deployer-src --entrypoint /bin/true tungstenfabric/tf-helm-deployer-src:latest
 sudo docker cp tf-helm-deployer-src:/src ~/tf-helm-deployer
