@@ -141,6 +141,10 @@ spec:
               mountPath: /var/lib/openstack/lib/python2.7/site-packages/tf-plugin.pth
               subPath: tf-plugin.pth
               readOnly: true
+            - name: neutron-bin
+              mountPath: /var/lib/openstack/lib/python3.6/site-packages/tf-plugin.pth
+              subPath: tf-plugin.pth
+              readOnly: true
             {{- else }}
             - name: neutron-etc
               mountPath: /etc/neutron/plugins/ml2/ml2_conf.ini
