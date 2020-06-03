@@ -18,7 +18,7 @@
 # if a file matching this name exists in the `values_overrides` directory within
 # each chart, apply it upon install/upgrade.
 
-set -e
+set -ex
 HELM_CHART="$1"
 : "${HELM_CHART_ROOT_PATH:="../openstack-helm"}"
 : "${OPENSTACK_RELEASE:="ocata"}"

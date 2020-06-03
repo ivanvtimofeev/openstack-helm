@@ -62,6 +62,7 @@ echo "nameserver ${dns_cluster_ip}" | sudo tee -a /etc/resolvconf/resolv.conf.d/
 sudo dpkg-reconfigure --force resolvconf
 sudo systemctl restart resolvconf
 
+export FEATURE_GATES=tf
 ./tools/deployment/common/setup-client.sh
 ./tools/deployment/component/common/ingress.sh
 ./tools/deployment/component/common/mariadb.sh
