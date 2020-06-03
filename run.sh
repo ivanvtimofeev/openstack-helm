@@ -4,6 +4,16 @@ export OPENSTACK_RELEASE=train
 export CONTAINER_DISTRO_NAME=ubuntu
 export CONTAINER_DISTRO_VERSION=bionic
 
+function nic_has_ip() {
+  local nic=$1
+  if nic_ip=$(ip addr show $nic | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*"); then
+    printf "\n$nic has IP $nic_ip"
+    return 0
+  else
+    return 1
+  fi
+}
+
 function wait_cmd_success() {
   # silent mode = don't print output of input cmd for each attempt.
   local cmd=$1
