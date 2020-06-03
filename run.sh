@@ -138,3 +138,10 @@ kubectl label nodes --all opencontrail.org/vrouter-kernel=enabled
 
 wait_nic_up vhost0
 kubectl label nodes --all opencontrail.org/controller=enabled
+./tools/deployment/common/wait-for-pods.sh tungsten-fabric
+./tools/deployment/common/wait-for-pods.sh openstack
+openstack compute service list
+openstack network agent list
+openstack hypervisor list
+helm test nova --timeout 900
+helm test neutron --timeout 900
