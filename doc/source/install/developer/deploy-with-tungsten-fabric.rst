@@ -4,7 +4,7 @@ Deployment With Tungsten Fabric
 
 Intro
 ^^^^^
-Tungsten Fabric is the multicloud and multistack network solution) which you can
+Tungsten Fabric is the multicloud and multistack network solution which you can
 use for your OpenStack as a network plugin. This document decribed how you can deploy
 a single node Open Stack based on Tungsten Fabric using openstack helm for development purpuse.
 
