@@ -18,6 +18,10 @@ stages="prepare deploy wait"
 function usage_tf(){
   cat <<EOF
 To use this script pass a stage you needed as a first argument:
+
+  tungsten_fabric.sh <stage>
+
+Possible stages are:
   prepare - prepared host to deploy Tungsten fabric:
     - add an values override for tf to libvirt
     - comment lines in compute_kit.sh which test nova and neutron is working
@@ -33,14 +37,17 @@ To use this script pass a stage you needed as a first argument:
 EOF
 }
 
+# 'prepare' stage implementation
 function prepare_tf(){
   echo Prepare tf
 }
 
+# 'deploy' stage implementation
 function deploy_tf(){
   echo deploy tf
 }
 
+# 'wait' stage implementation
 function wait_tf(){
   echo wait tf
 }
