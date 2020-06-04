@@ -32,10 +32,10 @@ Possible stages are:
 
   'deploy' - deploy Tungsten fabric:
     - download tf Helm charts
-    - preapare tf config
+    - prepare tf config
     - deploy Tungsten fabric to Kubernetes
     - wait for tf pods
-    - wait for openstack opds
+    - wait for openstack pods
     - run couple of openstack commands and nova tests
     Run 'deploy' stage after compute_kit.sh
 EOF
@@ -77,14 +77,66 @@ EOF
 ${node_ip} ${tf_hostname}.cluster.local ${tf_hostname}
 EOF
   fi
-
 }
 
 # 'deploy' stage implementation
 function deploy_tf(){
-  echo deploy tf
-}
+  if [[ -z "$CONTAINER_DISTRO_NAME" ]] ; then
+    echo "ERROR: Please set up CONTAINER_DISTRO_NAME"
+    exit 1
+  fi
 
+  # download tf Helm charts
+  sudo docker create --name tf-helm-deployer-src --entrypoint /bin/true tungstenfabric/tf-helm-deployer-src:latest
+  sudo docker cp tf-helm-deployer-src:/src ./tf-helm-deployer
+  sudo docker rm -fv tf-helm-deployer-src
+
+  pushd tf-helm-deployer
+  helm repo add local http://localhost:8879/charts
+  sudo make all
+  popd
+
+  # prepare tf config
+  cat <<EOF > ./tf-devstack-values.yaml
+global:
+  contrail_env:
+    CONTAINER_REGISTRY: tungstenfabric
+    CONTRAIL_CONTAINER_TAG: latest
+    CONTROLLER_NODES: ${CONTROLLER_NODES}
+    JVM_EXTRA_OPTS: "-Xms1g -Xmx2g"
+    BGP_PORT: "1179"
+    CONFIG_DATABASE_NODEMGR__DEFAULTS__minimum_diskGB: "2"
+    DATABASE_NODEMGR__DEFAULTS__minimum_diskGB: "2"
+    LOG_LEVEL: SYS_DEBUG
+    VROUTER_ENCRYPTION: FALSE
+    ANALYTICS_ALARM_ENABLE: TRUE
+    ANALYTICS_SNMP_ENABLE: TRUE
+    ANALYTICSDB_ENABLE: TRUE
+    CLOUD_ORCHESTRATOR: ${CONTAINER_DISTRO_NAME}
+  node:
+    host_os: ubuntu
+EOF
+
+  # deploy Tungsten fabric to Kubernetes
+  sudo mkdir -p /var/log/contrail
+  kubectl create ns tungsten-fabric
+  helm upgrade --install --namespace tungsten-fabric tungsten-fabric tf-helm-deployer/contrail -f tf-devstack-values.yaml
+  kubectl label nodes --all opencontrail.org/vrouter-kernel=enabled
+  wait_nic_up vhost0
+  kubectl label nodes --all opencontrail.org/controller=enabled
+
+  # wait for tf pods
+  ./tools/deployment/common/wait-for-pods.sh tungsten-fabric
+
+  # wait for openstack pods
+  ./tools/deployment/common/wait-for-pods.sh openstack
+
+  # run couple of openstack commands and nova tests
+  openstack compute service list
+  openstack hypervisor list
+  helm test nova --timeout 900
+  helm test neutron --timeout 900
+}
 
 if [[ $# == 0 ]] ; then
   echo "ERROR: You have to pass some stage in this script"
