@@ -1,5 +1,5 @@
 ====================
-Deployment With Tungsten Fabric
+Deployment with Tungsten Fabric
 ====================
 
 Intro
