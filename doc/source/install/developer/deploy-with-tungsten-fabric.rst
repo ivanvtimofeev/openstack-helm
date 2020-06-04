@@ -26,24 +26,24 @@ Install OpenStack packages
 
 .. code-block:: shell
 
-./tools/deployment/common/install-packages.sh
+  ./tools/deployment/common/install-packages.sh
 
 Install k8s Minikube
 ^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/common/deploy-k8s.sh
+  ./tools/deployment/common/deploy-k8s.sh
 
 Setup DNS for use cluster DNS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-dns_cluster_ip=`kubectl get svc kube-dns -n kube-system --no-headers -o custom-columns=":spec.clusterIP"`
-echo "nameserver ${dns_cluster_ip}" | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
-sudo dpkg-reconfigure --force resolvconf
-sudo systemctl restart resolvconf
+  dns_cluster_ip=`kubectl get svc kube-dns -n kube-system --no-headers -o custom-columns=":spec.clusterIP"`
+  echo "nameserver ${dns_cluster_ip}" | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
+  sudo dpkg-reconfigure --force resolvconf
+  sudo systemctl restart resolvconf
 
 
 Setup env for apply valoues_overrides
@@ -51,95 +51,95 @@ Setup env for apply valoues_overrides
 
 .. code-block:: shell
 
-export FEATURE_GATES=tf
+  export FEATURE_GATES=tf
 
 Setup OpenStack client
 ^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/common/setup-client.sh
+  ./tools/deployment/common/setup-client.sh
 
 Setup Ingress
 ^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/common/ingress.sh
+  ./tools/deployment/component/common/ingress.sh
 
 Setup MariaDB
 ^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/common/mariadb.sh
+  ./tools/deployment/component/common/mariadb.sh
 
 Setup Memcached
 ^^^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/common/memcached.sh
+  ./tools/deployment/component/common/memcached.sh
 
 Setup RabbitMQ
 ^^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/common/rabbitmq.sh
+  ./tools/deployment/component/common/rabbitmq.sh
 
 Setup NFS
 ^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/nfs-provisioner/nfs-provisioner.sh
+  ./tools/deployment/component/nfs-provisioner/nfs-provisioner.sh
 
 Setup Keystone
 ^^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/keystone/keystone.sh
+  ./tools/deployment/component/keystone/keystone.sh
 
 Setup Heat
 ^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/heat/heat.sh
+  ./tools/deployment/component/heat/heat.sh
 
 Setup Glance
 ^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/glance/glance.sh
+  ./tools/deployment/component/glance/glance.sh
 
 Prepare Host for tf
 ^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/compute-kit/tungsten-fabric.sh prepare
+  ./tools/deployment/component/compute-kit/tungsten-fabric.sh prepare
 
 Setup libvirt
 ^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/compute-kit/libvirt.sh
+  ./tools/deployment/component/compute-kit/libvirt.sh
 
 Setup Neutron and Nova
 ^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/compute-kit/compute-kit.sh
+  ./tools/deployment/component/compute-kit/compute-kit.sh
 
 Setup Tungsten Fabric
 ^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: shell
 
-./tools/deployment/component/compute-kit/tungsten-fabric.sh deploy
+  ./tools/deployment/component/compute-kit/tungsten-fabric.sh deploy
