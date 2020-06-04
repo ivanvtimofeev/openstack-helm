@@ -14,12 +14,12 @@ First you have to set up OpenStack and Linux versions and install needed package
 
 .. code-block:: shell
 
-export OPENSTACK_RELEASE=train
-export CONTAINER_DISTRO_NAME=ubuntu
-export CONTAINER_DISTRO_VERSION=bionic
-sudo apt update -y
-sudo apt install -y python3-pip resolvconf
-cd ~/openstack-helm
+  export OPENSTACK_RELEASE=train
+  export CONTAINER_DISTRO_NAME=ubuntu
+  export CONTAINER_DISTRO_VERSION=bionic
+  sudo apt update -y
+  sudo apt install -y python3-pip resolvconf
+  cd ~/openstack-helm
 
 Install OpenStack packages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
