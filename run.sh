@@ -66,6 +66,8 @@ cd ~/openstack-helm
 ./tools/deployment/common/install-packages.sh
 ./tools/deployment/common/deploy-k8s.sh
 
+exit 1
+
 dns_cluster_ip=`kubectl get svc kube-dns -n kube-system --no-headers -o custom-columns=":spec.clusterIP"`
 
 echo "nameserver ${dns_cluster_ip}" | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
@@ -97,10 +99,14 @@ NODE_IP=`ip addr show dev $PHYS_INT | grep 'inet ' | awk '{print $2}' | head -n 
 export CONTROLLER_NODES="${CONTROLLER_NODES:-$NODE_IP}"
 export AGENT_NODE="${AGENT_NODES:-$NODE_IP}"
 
-tf_hostname=$(hostname)
-cat <<EOF | sudo tee -a /etc/hosts
+# Check record in hosts for the main net interface
+# If we can't find record add it
+if ! cat /etc/hosts | grep "${NODE_IP}" ; then
+  tf_hostname=$(hostname)
+  cat <<EOF | sudo tee -a /etc/hosts
 ${NODE_IP} ${tf_hostname}.cluster.local ${tf_hostname}
 EOF
+fi
 
 cd
 sudo docker create --name tf-helm-deployer-src --entrypoint /bin/true tungstenfabric/tf-helm-deployer-src:latest
