@@ -103,7 +103,7 @@ EOF
 # 'prepare' stage implementation
 function prepare_tf(){
   # add an tf.yaml file to libvirt/values_overrides
-  cat <<EOF > OSH_INFRA_PATH/libvirt/values_overrides/tf.yaml
+  cat <<EOF > ${OSH_INFRA_PATH}/libvirt/values_overrides/tf.yaml
 network:
   backend:
     - tungstenfabric
