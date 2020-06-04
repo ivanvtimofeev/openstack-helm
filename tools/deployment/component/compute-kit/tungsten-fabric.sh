@@ -15,22 +15,22 @@ set -xe
 
 stages="prepare deploy wait"
 
-function usage_tf(){
+function show_usage_tf(){
   cat <<EOF
-To use this script pass a stage you needed as a first argument:
+To use this script pass a stage you need as a first argument:
 
   tungsten_fabric.sh <stage>
 
 Possible stages are:
-  prepare - prepared host to deploy Tungsten fabric:
-    - add an values override for tf to libvirt
-    - comment lines in compute_kit.sh which test nova and neutron is working
+  'prepare' - prepared host to deploy Tungsten fabric:
+    - add an tf.yaml file to libvirt/values_override
+    - comment lines in compute_kit.sh which wait nova and neutron is working and run tests
     - check and add line to /etc/hosts file
-  deploy - deplou Tungsten fabric:
+  'deploy' - deploy Tungsten fabric:
     - download tf Helm charts
     - preapare tf config
     - deploy Tungsten fabric to Kubernetes
-  wait - wait for tf and openstack pods are up and works properly
+  'wait' - wait for tf and openstack pods are up and works properly:
     - wait for tf pods
     - wait for openstack opds
     - run couple of openstack commands and nova tests
@@ -54,13 +54,13 @@ function wait_tf(){
 
 if [[ $# == 0 ]] ; then
   echo "ERROR: You have to pass some stage in this script"
-  usage_tf
+  show_usage_tf
   exit 1
 fi
 
 if [[ ! $stages =~ .*${1}.* ]] ; then
   echo "ERROR: Not any valid stage has been found"
-  usage_tf
+  show_usage_tf
   exit 1
 fi
 
