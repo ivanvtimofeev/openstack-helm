@@ -116,8 +116,8 @@ Setup Glance
 
   ./tools/deployment/component/glance/glance.sh
 
-Prepare Host for tf
-^^^^^^^^^^^^^^^^^^^
+Prepare host and openstack helm for tf
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: shell
 
