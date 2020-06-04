@@ -66,8 +66,6 @@ cd ~/openstack-helm
 ./tools/deployment/common/install-packages.sh
 ./tools/deployment/common/deploy-k8s.sh
 
-exit 1
-
 dns_cluster_ip=`kubectl get svc kube-dns -n kube-system --no-headers -o custom-columns=":spec.clusterIP"`
 
 echo "nameserver ${dns_cluster_ip}" | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
