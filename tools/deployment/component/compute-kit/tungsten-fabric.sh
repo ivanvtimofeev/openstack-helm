@@ -127,7 +127,7 @@ EOF
   sed -i 's/^helm test neutron --timeout $timeout/#helm test neutron --timeout $timeout/' ./tools/deployment/component/compute-kit/compute-kit.sh
 
   # check and add a line to /etc/hosts file
-  local node_ip=get_node_ip
+  local node_ip=$(get_node_ip)
   if ! cat /etc/hosts | grep "${node_ip}" ; then
     local tf_hostname=$(hostname)
     cat <<EOF | sudo tee -a /etc/hosts
@@ -143,7 +143,7 @@ function deploy_tf(){
     exit 1
   fi
 
-  export CONTROLLER_NODES=get_node_ip
+  export CONTROLLER_NODES=$(get_node_ip)
 
   # download tf Helm charts
   sudo docker create --name tf-helm-deployer-src --entrypoint /bin/true tungstenfabric/tf-helm-deployer-src:latest
