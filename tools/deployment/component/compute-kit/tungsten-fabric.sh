@@ -19,7 +19,7 @@ OSH_INFRA_PATH=${OSH_INFRA_PATH:="../openstack-helm-infra"}
 function get_node_ip() {
   local phys_int=`ip route get 1 | grep -o 'dev.*' | awk '{print($2)}'`
   local node_ip=`ip addr show dev $phys_int | grep 'inet ' | awk '{print $2}' | head -n 1 | cut -d '/' -f 1`
-  return $node_ip
+  echo $node_ip
 }
 
 function nic_has_ip() {
